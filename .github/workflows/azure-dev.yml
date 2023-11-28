@@ -17,6 +17,11 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     steps:
+
+      - name: Show ENV variables
+        run: env
+        shell: bash
+        
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
