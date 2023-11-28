@@ -16,12 +16,9 @@ jobs:
       AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
     steps:
 
-      - name: Show ENV variables
-        run: env
-        shell: bash
-        
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
