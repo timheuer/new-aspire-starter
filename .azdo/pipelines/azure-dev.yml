@@ -32,6 +32,7 @@ steps:
   - pwsh: |
       azd provision --no-prompt
     displayName: Provision Infrastructure
+    workingDirectory: ./new-aspire-starter.AppHost/
     env:
       AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       AZURE_ENV_NAME: $(AZURE_ENV_NAME)
@@ -43,6 +44,7 @@ steps:
   - pwsh: |
       azd deploy --no-prompt
     displayName: Deploy Application
+    workingDirectory: ./new-aspire-starter.AppHost/
     env:
       AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       AZURE_ENV_NAME: $(AZURE_ENV_NAME)
