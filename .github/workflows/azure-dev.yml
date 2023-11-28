@@ -19,6 +19,10 @@ jobs:
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
     steps:
 
+      - name: Emit ENV
+        run: env
+        shell: bash
+        
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
