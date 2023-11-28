@@ -6,6 +6,7 @@
 manifest.json
 
 # dotenv files
+!new-aspire-starter.AppHost/.azure/aspirestarterdev/.env
 .env
 
 # User-specific files
