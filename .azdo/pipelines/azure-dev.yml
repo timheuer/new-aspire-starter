@@ -19,15 +19,13 @@ steps:
     displayName: Setup .NET Aspire
 
   - pwsh: |
-      $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
-
-      azd auth login `
-        --client-id "$($info.clientId)" `
-        --client-secret "$($info.clientSecret)" `
-        --tenant-id "$($info.tenantId)"
-    displayName: azd login
-    env:
-      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
+      if (-not [string]::IsNullOrWhiteSpace($Env:AZURE_CLIENT_ID)) {
+        azd auth login `
+          --client-id "$Env:AZURE_CLIENT_ID" `
+          --federated-credential-provider "github" `
+          --tenant-id "$Env:AZURE_TENANT_ID"
+      }
+    displayName: Log in with Azure (Federated Credentials)
 
   - pwsh: |
       azd provision --no-prompt
@@ -39,7 +37,6 @@ steps:
       AZURE_LOCATION: $(AZURE_LOCATION)
       AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
       AZURE_TENANT_ID: $(AZURE_TENANT_ID)
-      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
 
   - pwsh: |
       azd deploy --no-prompt
@@ -51,7 +48,6 @@ steps:
       AZURE_LOCATION: $(AZURE_LOCATION)
       AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
       AZURE_TENANT_ID: $(AZURE_TENANT_ID)
-      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
 
   - pwsh: |
       azd auth logout
