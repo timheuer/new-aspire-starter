@@ -1,0 +1,56 @@
+# Set this to the mainline branch you are using
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: setup-azd@0
+    displayName: Install azd
+
+  - task: UseDotNet@2
+    displayName: "Setup .NET 8"
+    inputs:
+      version: "8.0.x"
+
+  - pwsh: |
+      dotnet workload install aspire
+    displayName: Setup .NET Aspire
+
+  - pwsh: |
+      $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+
+      azd auth login `
+        --client-id "$($info.clientId)" `
+        --client-secret "$($info.clientSecret)" `
+        --tenant-id "$($info.tenantId)"
+    displayName: azd login
+    env:
+      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
+
+  - pwsh: |
+      azd provision --no-prompt
+    displayName: Provision Infrastructure
+    env:
+      AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+      AZURE_ENV_NAME: $(AZURE_ENV_NAME)
+      AZURE_LOCATION: $(AZURE_LOCATION)
+      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZURE_TENANT_ID)
+      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
+
+  - pwsh: |
+      azd deploy --no-prompt
+    displayName: Deploy Application
+    env:
+      AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+      AZURE_ENV_NAME: $(AZURE_ENV_NAME)
+      AZURE_LOCATION: $(AZURE_LOCATION)
+      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZURE_TENANT_ID)
+      AZURE_CREDENTIALS: $(AZURE_CREDENTIALS)
+
+  - pwsh: |
+      azd auth logout
+    displayName: Cleanup
