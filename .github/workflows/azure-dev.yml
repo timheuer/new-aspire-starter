@@ -36,7 +36,9 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: 🌟 Setup .NET Aspire
-        run: dotnet workload install aspire
+        run: |
+            dotnet workload update
+            dotnet workload install aspire
 
       - name: 🔑 Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
