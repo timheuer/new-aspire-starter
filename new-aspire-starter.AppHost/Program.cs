@@ -7,7 +7,7 @@ var frontendcache = builder.AddRedisContainer("frontendcache");
 
 var photostorage = builder.AddAzureStorage("psstorage");
 var blobgs = photostorage.AddBlobs("photos");
-var keys = builder.AddAzureKeyVault("secretkeystorage");
+var keys = builder.AddAzureKeyVault("keys");
 
 // microservices
 var apiservice = builder.AddProject<Projects.new_aspire_starter_ApiService>("apiservice")
