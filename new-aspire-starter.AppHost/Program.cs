@@ -5,7 +5,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // dependencies
 var frontendcache = builder.AddRedisContainer("frontendcache");
 
-var photostorage = builder.AddAzureStorage("photostorage");
+var photostorage = builder.AddAzureStorage("psstorage");
 var blobgs = photostorage.AddBlobs("photos");
 
 // microservices
