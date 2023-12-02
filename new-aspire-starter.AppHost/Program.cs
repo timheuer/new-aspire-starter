@@ -7,13 +7,16 @@ var frontendcache = builder.AddRedisContainer("frontendcache");
 
 var photostorage = builder.AddAzureStorage("psstorage");
 var blobgs = photostorage.AddBlobs("photos");
+var keys = builder.AddAzureKeyVault("secretkeystorage");
 
 // microservices
-var apiservice = builder.AddProject<Projects.new_aspire_starter_ApiService>("apiservice");
+var apiservice = builder.AddProject<Projects.new_aspire_starter_ApiService>("apiservice")
+    .WithReference(keys);
 
 builder.AddProject<Projects.new_aspire_starter_Web>("webfrontend")
     .WithReference(apiservice)
     .WithReference(frontendcache)
-    .WithReference(blobgs);
+    .WithReference(blobgs)
+    .WithReference(keys);
 
 builder.Build().Run();
