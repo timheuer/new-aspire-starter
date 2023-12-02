@@ -28,7 +28,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ☁️ Install azd
-        uses: Azure/setup-azd@v0.1.0
+        #uses: Azure/setup-azd@v0.1.0
+        shell: pwsh
+        run: |
+          Invoke-RestMethod 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3035/uninstall-azd.ps1' -OutFile uninstall-azd.ps1; ./uninstall-azd.ps1
+          Invoke-RestMethod 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3035/install-azd.ps1' -OutFile install-azd.ps1; ./install-azd.ps1 -BaseUrl 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3035' -Version '' -SkipVerify -Verbose
 
       - name: 🤖 Setup .NET Core
         uses: actions/setup-dotnet@v3
