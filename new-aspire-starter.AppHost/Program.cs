@@ -7,7 +7,7 @@ var frontendcache = builder.AddRedisContainer("frontendcache");
 
 var photostorage = builder.AddAzureStorage("psstorage");
 var blobgs = photostorage.AddBlobs("photos");
-var keys = builder.AddAzureKeyVault("keys");
+var keys = builder.AddAzureKeyVault("keys2");
 var db = builder.AddPostgresContainer("db").AddDatabase("psdb");
 
 // microservices
