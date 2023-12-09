@@ -6,8 +6,9 @@ var builder = DistributedApplication.CreateBuilder(args);
 var frontendcache = builder.AddRedisContainer("frontendcache");
 
 var photostorage = builder.AddAzureStorage("psstorage");
+var qstorage = builder.AddAzureStorage("qstorage");
 var blobgs = photostorage.AddBlobs("photos");
-var queues = photostorage.AddQueues("pschange");
+var queues = qstorage.AddQueues("pschange");
 
 var keys = builder.AddAzureKeyVault("keys2");
 var db = builder.AddPostgresContainer("db").AddDatabase("psdb");
