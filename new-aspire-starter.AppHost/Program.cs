@@ -9,8 +9,8 @@ var photostorage = builder.AddAzureStorage("psstorage");
 //var qstorage = builder.AddAzureStorage("qstorage");
 var blobgs = photostorage.AddBlobs("photos");
 //var queues = qstorage.AddQueues("pschange");
-var queues = photostorage.AddQueues("pschange");
-var tables = photostorage.AddTables("pstbl");
+//var queues = photostorage.AddQueues("pschange");
+//var tables = photostorage.AddTables("pstbl");
 
 var keys = builder.AddAzureKeyVault("keys3");
 var db = builder.AddPostgresContainer("db").AddDatabase("psdb");
@@ -18,9 +18,10 @@ var db = builder.AddPostgresContainer("db").AddDatabase("psdb");
 // microservices
 var apiservice = builder.AddProject<Projects.new_aspire_starter_ApiService>("apiservice")
     .WithReference(keys)
-    .WithReference(db)
-    .WithReference(queues)
-    .WithReference(tables);
+    .WithReference(blobgs)
+    .WithReference(db);
+    //.WithReference(queues)
+    //.WithReference(tables);
 
 builder.AddProject<Projects.new_aspire_starter_Web>("webfrontend")
     .WithReference(apiservice)
