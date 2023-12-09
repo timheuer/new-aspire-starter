@@ -12,7 +12,7 @@ var blobgs = photostorage.AddBlobs("photos");
 var queues = photostorage.AddQueues("pschange");
 var tables = photostorage.AddTables("pstbl");
 
-var keys = builder.AddAzureKeyVault("keys2");
+var keys = builder.AddAzureKeyVault("keys3");
 var db = builder.AddPostgresContainer("db").AddDatabase("psdb");
 
 // microservices
