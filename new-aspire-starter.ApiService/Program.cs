@@ -1,3 +1,6 @@
+using Azure.Storage.Blobs;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
@@ -5,6 +8,8 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
+
+builder.AddAzureBlobService("photos");
 
 var app = builder.Build();
 
@@ -27,6 +32,15 @@ app.MapGet("/weatherforecast", () =>
         ))
         .ToArray();
     return forecast;
+});
+
+app.MapGet("/blob", async () =>
+{
+    var blobService = app.Services.GetRequiredService<BlobServiceClient>();
+    var bc = blobService.GetBlobContainerClient("photos");
+
+    await bc.CreateIfNotExistsAsync();
+    await bc.UploadBlobAsync("test.txt", new MemoryStream(Encoding.UTF8.GetBytes("Hello World!")));
 });
 
 app.MapDefaultEndpoints();

@@ -31,20 +31,24 @@ jobs:
 
       - name: ☁️ Install azd
         #uses: Azure/setup-azd@v0.1.0
-        shell: pwsh
         run: |
-          Invoke-RestMethod 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3049/uninstall-azd.ps1' -OutFile uninstall-azd.ps1; ./uninstall-azd.ps1
-          Invoke-RestMethod 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3049/install-azd.ps1' -OutFile install-azd.ps1; ./install-azd.ps1 -BaseUrl 'https://azuresdkreleasepreview.blob.core.windows.net/azd/standalone/pr/3049' -Version '' -SkipVerify -Verbose
+          curl -fsSL https://aka.ms/install-azd.sh | bash -s -- --version daily
 
       - name: 🤖 Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
 
+      - name: ℹ️ Install dumpall
+        run: dotnet tool install --global TimHeuer.DumpAll
+
       - name: 🌟 Setup .NET Aspire
         run: |
             dotnet workload update
             dotnet workload install aspire
+
+      - name: 🗒️ Dump all info
+        run: dumpall
 
       - name: 🔑 Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
